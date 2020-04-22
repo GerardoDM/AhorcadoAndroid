@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     final String MSJ_GANADOR = "Ganaste";
     final String MSJ_PERDEDOR = "Perdiste";
 
-    void revealLetterInWord(char letter){
+    void mostrarLetraEnPalabra(char letter){
         int indexOfLetter = palabraParaSerAdivinada.indexOf(letter);
 
         while(indexOfLetter >= 0){
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void displayWordOnScreen(){
+    void mostrarPalabraEnPantalla(){
         String formattedString = "";
         for(char character : palabraMostradaCharArray){
             formattedString += character + "";
@@ -65,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
             palabraMostradaCharArray[i] = '_';
         }
 
-        revealLetterInWord(palabraMostradaCharArray[0]);
+        mostrarLetraEnPalabra(palabraMostradaCharArray[0]);
 
-        revealLetterInWord(palabraMostradaCharArray[palabraMostradaCharArray.length - 1]);
+        mostrarLetraEnPalabra(palabraMostradaCharArray[palabraMostradaCharArray.length - 1]);
 
         palabraMostradaString = String.valueOf(palabraMostradaCharArray);
 
-        displayWordOnScreen();
+        mostrarPalabraEnPantalla();
 
         editInput.setText("");
 
@@ -90,7 +90,89 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listaPalabras = new ArrayList<String>();
+        txtPalabraParaSerAdivinada = (TextView) findViewById(R.id.txtPalabraParaAdivinar);
+        editInput = (EditText) findViewById(R.id.editInput);
+        txtLetraIntentada = (TextView) findViewById(R.id.txtLetrasIntentadas);
+        txtIntentosRestantes = (TextView) findViewById(R.id.txtIntentosRestantes);
 
+        iniciar();
+
+        editInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                // SI HAY ALGUNA LETRA EN EL INPUT
+                if(charSequence.length() != 0){
+                    checarLetraEnPalabra(charSequence.charAt(0));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+    }
+
+    void checarLetraEnPalabra(char letter){
+        //checar si la letra se encontró dentro de palabra
+        if(palabraParaSerAdivinada.indexOf(letter) >= 0){
+
+            // si la letra no se mostró
+            if(palabraMostradaString.indexOf(letter) < 0){
+
+                //reemplazar guiones bajos con la letra
+                mostrarLetraEnPalabra(letter);
+
+                //actualizar cambios en pantalla
+                mostrarPalabraEnPantalla();
+
+                //checar si ganó
+                if(palabraMostradaString.contains("_")){
+                    txtIntentosRestantes.setText(MSJ_GANADOR);
+                }
+            }
+        }
+        //si la letra no sé encontró...
+        else{
+            // quitar intentos y mostrar en pantalla
+            disminuirIntentosRestantes();
+
+            //checar si el juego se perdió
+            if(intentosRestantes.isEmpty()){
+                txtIntentosRestantes.setText(MSJ_PERDEDOR);
+                txtPalabraParaSerAdivinada.setText(palabraParaSerAdivinada);
+            }
+        }
+
+        //mostrar la letra que se probó
+        if(letraIntentada.indexOf(letter) < 0){
+            letraIntentada += letter + ", ";
+            String messageToBeDisplayed = MSJ_CON_LETRAS_INTENTADAS + letraIntentada;
+            txtLetraIntentada.setText(messageToBeDisplayed);
+        }
+    }
+
+    void disminuirIntentosRestantes(){
+        // si quedan todavia intentos
+        if(!intentosRestantes.isEmpty()){
+
+            intentosRestantes = intentosRestantes.substring(0, intentosRestantes.length() - 2);
+            txtIntentosRestantes.setText(intentosRestantes);
+        }
+    }
+
+    void reset(View v){
+        //empezar otro juego
+        iniciar();
     }
 
 
