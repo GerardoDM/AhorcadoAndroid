@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -96,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
         txtLetraIntentada = (TextView) findViewById(R.id.txtLetrasIntentadas);
         txtIntentosRestantes = (TextView) findViewById(R.id.txtIntentosRestantes);
 
+        listaPalabras.add("rojo");
+        listaPalabras.add("azul");
+        listaPalabras.add("verde");
+        listaPalabras.add("blanco");
+        listaPalabras.add("negro");
+
+
         iniciar();
 
         editInput.addTextChangedListener(new TextWatcher() {
@@ -120,6 +128,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        Button btnReset = (Button) findViewById(R.id.btnReset);
+        btnReset.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                iniciar();
+            }
+        });
+
+
     }
 
     void checarLetraEnPalabra(char letter){
@@ -136,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 mostrarPalabraEnPantalla();
 
                 //checar si ganó
-                if(palabraMostradaString.contains("_")){
+                if(!palabraMostradaString.contains("_")){
                     txtIntentosRestantes.setText(MSJ_GANADOR);
                 }
             }
@@ -170,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void reset(View v){
-        //empezar otro juego
-        iniciar();
-    }
+    //void reset(View v){
+      //  //empezar otro juego
+        //iniciar();
+    //}
 
 
 
