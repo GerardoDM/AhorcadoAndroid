@@ -14,6 +14,20 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView txtPalabraParaSerAdivinada;
+    String PalabraParaSerAdivinada;
+    String palabraMostradaString;
+    char [] palabraMostradaCharArray;
+    ArrayList<String> listaPalabras;
+    EditText editInput;
+    TextView txtLetraIntentada;
+    String letraIntentada;
+    final String MSJ_WITH_LETRAS_INTENTADAS = "Letras intentadas: ";
+    TextView txtIntentosRestantes;
+    String intentosRestantes;
+    final String MSJ_GANADOR = "Ganaste";
+    final String MSJ_PERDEDOR = "Perdiste";
+
 
 
     @Override
